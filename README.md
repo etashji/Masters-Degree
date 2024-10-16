@@ -16,6 +16,20 @@
 * Homework Assignment 4: This assignment deals with binary addresses and cache block sizes.
 * Homework Assignment 5: This assignment deals with N-cube networks and GPU architectures.
 ## 2023F CS 561-WN Database SQL
-### This folder contains various assignments completed during my database SQL class. They were completed using SQL and PgAdmin4.
+### This folder contains assignments completed during my database SQL class. They were completed using SQL and PgAdmin4.
 * Assignment 1: I wrote a series of queries involving a set of products and sales, including find minimum and maximum sales, most-purchased and least-purchased objects, etc.
 * Assignment 2: This query will be used to calculate various elements of data relating to a set of products and sales.
+## 2023S CS 570-WN Data Structures and Algorithms
+### This folder contains assignemnts completed during my Data Structures and Algorithms course. They were completed using the Java programming language.
+* Assignment 1: This program involved converting an arabic number to a binary number.
+* Assignment 2: This program implemented algorithms of various complexity.
+* Assignment 3: This program implemented a linked list.
+* Assignment 4: This program involved implementing a program that could navigate a maze.
+* Assignment 5: This program implements a treap.
+* Asiggnment 6: This program implemented an algorith that makes use of anagrams.
+## 2024A CPE 695-WN Applied Machine Learning
+### This folder contains assignments completed during my Machine Learning course. They were written using Python and Jupyter Notebook.
+* Homework 1: This involves using machine learning to find a curve responding to noisy data. Furthermore, the homework sheet involves explaining a number of concepts related to machine learning.
+* Homework 3: This involves training a data set using a decision tree and a random forest. The homework itself involves subjects like the bias-variance tradeoff and confusion matrices.
+* Homework 4: This involves using a decision tree and a random forest. The homework itself involves subjects like Bayes rule an the Naive Bayes algorithm.
+* Homework 5: This involves designing a genetic algorithm to solve the polynomial fitting problem. The homework itself involves using the Gaussian Mixture technique for anomaly detection.
