@@ -1,0 +1,20 @@
+{
+  "name": "cs-546-lab-9",
+  "version": "1.0.0",
+  "description": "My lab 9 module.",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "cs-546"
+  },
+  "author": "Eric Tashji 20019353",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "path": "^0.12.7"
+  }
+}

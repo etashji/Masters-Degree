@@ -1,0 +1,17 @@
+<head>
+        <title>Protected</title>
+        <link rel = "stylesheet" href="../../public/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1 class="center">Protected</h1>
+    </header>
+    <main class="margin-left">
+        <p class="center">Welcome {{firstName}} {{lastName}}, the time is now: {{currentTime}}. Your role in the system is {{role}}.</p>
+        {{#if valid}}
+        <a class="center-text" href="/admin">Admin</a>
+        {{/if}}
+        <a class="center-text" href="/logout">Logout</a>
+    </main>
+    <script src="../public/js/client_side_validation.js"></script>
+</body>

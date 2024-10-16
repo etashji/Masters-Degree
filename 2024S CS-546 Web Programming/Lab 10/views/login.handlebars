@@ -1,0 +1,23 @@
+<head>
+        <title>Login</title>
+        <link rel = "stylesheet" href="../../public/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1 class="center">Login</h1>
+    </header>
+    <main>
+        <form class="center" id="login-form" method="POST" action="/login">
+            <label class="center" for="emailAddressInput">Email Address:</label>
+            <input class="center-align margin-bottom" type="email" name="emailAddressInput" id="emailAddressInput">
+            <br>
+            <label class="center" for="passwordInput">Password:</label>
+            <input class="center-align margin-bottom margin-left" type="password" name="passwordInput" id="passwordInput">
+            <br>
+            <button type="submit">Login</button>
+            <p>{{error}}</p>
+        </form>
+        <a class="center-text" href="/register">Click here to register.</a>
+    </main>
+    <script src="../public/js/client_side_validation.js"></script>
+</body>

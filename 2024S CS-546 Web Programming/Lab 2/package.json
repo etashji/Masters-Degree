@@ -1,0 +1,20 @@
+{
+  "name": "cs-546-lab-2",
+  "version": "1.0.0",
+  "description": "This is the package for lab 2 in CS 546: Web Programming.",
+  "main": "app.js",
+  "type":"module",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "CS-546"
+  },
+  "keywords": [
+    "lab2",
+    "CS-546"
+  ],
+  "author": "Eric Tashji 20019353",
+  "license": "ISC"
+}

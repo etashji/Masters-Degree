@@ -1,0 +1,23 @@
+{
+  "name": "cs-546-lab-3",
+  "version": "1.0.0",
+  "description": "The package.json file for Eric Tashji's lab 3.",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "cs-546"
+  },
+  "keywords": [
+    "Tashji_Eric",
+    "Lab_3"
+  ],
+  "author": "Eric Tashji 20019353",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.7"
+  }
+}

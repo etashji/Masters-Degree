@@ -1,0 +1,20 @@
+    <head>
+        <title>{{character.name}}</title>
+        <link rel = "stylesheet" href="../public/site.css">
+    </head>
+    <body>
+        <main>
+            <article>
+                <h1 class="center-text enlarge-header">{{character.name}}</h1>
+                <img alt = "Image not found." class = "center-img" src = "{{character.thumbnail}}">
+                <p class="center-text margins enlarge">{{character.description}}</p>
+                <h2 class="center-text">Comics</h2>
+                <ul class="center-list">
+                    {{#each character.comics}}
+                    <li>{{this}}</li>
+                    {{/each}}
+                </ul>
+            </article>
+        </main>
+        <a class="center-list" href="/">Search for Another Character</a>
+    </body>

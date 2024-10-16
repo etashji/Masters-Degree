@@ -1,0 +1,22 @@
+    <head>
+        <title>Marvel Characters Found</title>
+        <link rel = "stylesheet" href="../public/site.css">
+    </head>
+    <body>
+        <h1 class="center-text enlarge-header">Marvel Characters Found</h1>
+        <h2 class="center-text enlarge-header">{{searchCharacterByName}}</h2>
+        <main>
+            {{#if found}}
+            <ol class="center-list">
+                {{#each characters}}
+                <li>
+                    <a href="/marvelcharacter/{{id}}">{{name}}</a>
+                </li>
+                {{/each}}
+            </ol>
+            {{else}}
+            <p class="not-found center-text">We're sorry, but no results were found for {{searchCharacterByName}}.</p>
+            {{/if}}
+        </main>
+        <a class="center-list" href="/">Search for Another Character</a>
+    </body>

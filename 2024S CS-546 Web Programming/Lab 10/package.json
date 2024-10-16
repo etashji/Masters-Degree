@@ -1,0 +1,22 @@
+{
+  "name": "cs-546-lab-10",
+  "version": "1.0.0",
+  "description": "My lab 10 module.",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Eric Tashji 20019353",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "email-validator": "^2.0.4",
+    "express": "^4.19.2",
+    "express-handlebars": "^7.1.2",
+    "express-session": "^1.18.0",
+    "handlebars": "^4.7.8",
+    "mongodb": "^6.5.0"
+  }
+}

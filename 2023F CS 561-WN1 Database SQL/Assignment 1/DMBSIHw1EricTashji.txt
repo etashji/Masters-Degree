@@ -1,0 +1,265 @@
+--Name: Eric Tashji 
+--CWID: 20019353
+
+--Database Management Systems Homework 1
+
+/*The beginning and end of each query is marked in a comment. Simply copy and paste each query into PostgreSQL's query tool and run to view the results. Each query also has a summary of that query before it begins.*/
+
+--An explanation of the complexity of the queries is included at the end of the document.
+
+/*Query 1 will compute the minimum and maximum sales of each product, along with the dates of those purchases and the states they were purchased in, as well as the average of each product's overall purchases. The query makes use of the WITH AS clause to create temporary tables to ensure correct GROUP BY statements for the aggregate functins, as well as to ensure that the minimum and maximum values are correctly grouped together.*/
+
+--Begin Query 1:
+
+WITH p1 AS (
+	SELECT cust, min(quant) min_q, max(quant) max_q, avg(quant) avg_q
+	FROM sales
+	GROUP BY cust
+), p2 AS (
+	SELECT p1.cust, p1.min_q, sales.prod min_prod, sales.date min_date,
+	sales.state st, p1.max_q, p1.avg_q
+	FROM sales, p1
+	WHERE p1.cust = sales.cust AND p1.min_q = sales.quant
+), p3 AS (
+	SELECT p2.cust customer, p2.min_q, p2.min_prod, p2.min_date, p2.st, p2.max_q, 
+	sales.prod max_prod, sales.date max_date, sales.state st, p2.avg_q
+	FROM sales, p2
+	WHERE p2.cust = sales.cust AND p2.max_q = sales.quant
+)
+SELECT * FROM p3
+
+--End Query 1
+
+/*Query 2 will find the busiest and slowest day (as in most and least total sales) of products, as well as their total sales quantities. It uses WITH AS statements to ensure the aggregate functions are correctly grouped together. It begins by finding the sum of the sales for each day before finding the highest and lowest sales amongst them. Then, it associates the max and min of each month with their corresponding dates and values.*/
+
+--Begin Query 2:
+
+WITH p1 AS (
+	SELECT sales.year, sales.month, sales.day, sum(quant) total_sales 
+	FROM sales 
+	GROUP BY sales.year, sales.month, sales.day
+), p2 AS (
+	SELECT year, month, max(p1.total_sales) busiest_total_q, 
+		min(p1.total_sales) slowest_total_q
+	FROM p1
+	GROUP BY year, month
+	ORDER BY year, month
+), p3 AS (
+	SELECT p2.year, p2.month, p1.day busiest_day, p2.busiest_total_q
+	FROM p1, p2
+	WHERE p2.busiest_total_q = p1.total_sales
+	ORDER BY year, month
+), p4 AS (
+	SELECT p2.year, p2.month, p1.day slowest_day, p2.slowest_total_q
+	FROM p1, p2
+	WHERE p2.slowest_total_q = p1.total_sales
+	ORDER BY year, month
+)
+SELECT p3.year, p3.month, p3.busiest_day, p3.busiest_total_q,
+	p4.slowest_day, p4.slowest_total_q
+FROM p3, p4
+WHERE p3.year = p4.year AND p3.month = p4.month
+
+--End Query 2
+
+/*Query 3 will find each customer's most-purchased and least-purchased product. It uses the WITH AS clause to ensure that the aggregate functions have the correct groupings. It gegins by calculating the total amount of product each customer purchased. Then, it determines the max and min of each product for each customer before associating each customer with the corresponding minimum and maximum product purchased.*/
+
+--Begin Query 3:
+
+WITH p1 AS (
+	SELECT cust customer, prod product, sum(quant) total_product
+	FROM sales
+	GROUP BY customer, product
+	ORDER BY customer, product
+), p2 AS (
+	SELECT customer, max(total_product) max_quant, min(total_product) min_quant
+	FROM p1
+	GROUP BY customer
+), p3 AS (
+	SELECT p1.customer, p1.product max_product
+	FROM p1, p2
+	WHERE p2.max_quant = p1.total_product
+), p4 AS (
+	SELECT p1.customer, p1.product min_product
+	FROM p1, p2
+	WHERE p2.min_quant = p1.total_product
+), p5 AS (
+	SELECT p3.customer, p3.max_product, p4.min_product
+	FROM p3, p4
+	WHERE p3.customer = p4.customer
+	ORDER BY customer
+)
+SELECT * FROM p5
+
+--End Query 3
+
+/*Query 4 will determine the average sales quantities of each customer in a given season. It uses the WITH AS clause to ensure correct groupings for both the aggregate functions and the seasons. It begins by finding the purchases for each customer and product in a given season. Then, it finds the average of those purchases each season. Finally, it combines all the elements to show the averages of each customer's product purchases for each season.*/
+
+--Begin Query 4:
+
+WITH p1 AS (
+	SELECT cust customer, prod product, month, quant spring_amt
+	FROM sales
+	WHERE month = 3 OR month = 4 OR month = 5
+	ORDER BY customer, product, month
+), p2 AS (
+	SELECT customer, product, avg(spring_amt) spring_avg
+	FROM p1
+	GROUP BY customer, product
+), p3 AS (
+	SELECT cust customer, prod product, month, quant summer_amt
+	FROM sales
+	WHERE month = 6 OR month = 7 OR month = 8
+	ORDER BY customer, product, month
+), p4 AS (
+	SELECT customer, product, avg(summer_amt) summer_avg
+	FROM p3
+	GROUP BY customer, product
+), p5 AS (
+	SELECT cust customer, prod product, month, quant fall_amt
+	FROM sales
+	WHERE month = 9 OR month = 10 OR month =11
+	ORDER BY customer, product, month
+), p6 AS (
+	SELECT customer, product, avg(fall_amt) fall_avg
+	FROM p5
+	GROUP BY customer, product
+), p7 AS (
+	SELECT cust customer, prod product, month, quant winter_amt 
+	FROM sales
+	WHERE month = 1 OR month = 2 OR month = 12
+	ORDER BY customer, product, month
+), p8 AS (
+	SELECT customer, product, avg(winter_amt) winter_avg
+	FROM p7
+	GROUP BY customer, product
+	ORDER BY customer, product
+), p9 AS (
+	SELECT p2.customer, p2.product, p2.spring_avg, p4.summer_avg
+	FROM p2, p4
+	WHERE p2.customer = p4.customer AND p2.product = p4.product
+), p10 AS (
+	SELECT p9.customer, p9.product, p9.spring_avg, p9.summer_avg, p6.fall_avg
+	FROM p9, p6
+	WHERE p9.customer = p6.customer AND p9.product = p6.product
+), p11 AS (
+	SELECT p10.customer, p10.product, p10.spring_avg, p10.summer_avg, 
+		p10.fall_avg, p8.winter_avg
+	FROM p10, p8
+	WHERE p10.customer = p8.customer AND p10.product = p8.product
+), p12 AS (
+	SELECT cust customer, prod product, avg(quant) average, sum(quant) total
+	FROM sales
+	GROUP BY cust, product
+), p13 AS (
+	SELECT cust customer, prod product, count(prod) count
+	FROM sales
+	GROUP BY customer, product
+	ORDER BY customer, product
+), p14 AS (
+	SELECT p11.customer, p11.product, p11.spring_avg, 
+		p11.summer_avg, p11.fall_avg, p11.winter_avg, p12.average, p12.total
+	FROM p11, p12
+	WHERE p11.customer = p12.customer AND p11.product = p12.product
+), p15 AS (
+	SELECT p14.customer, p14.product, p14.spring_avg, p14.summer_avg, 
+		p14.fall_avg, p14.winter_avg, p14.average, p14.total, p13.count
+	FROM p14, p13
+	WHERE p14.customer = p13.customer AND p14.product = p13.product
+	ORDER BY customer, product
+)
+SELECT * FROM p15
+
+--End Query 4
+
+/*Query 5 will calculate the maximum sales quantities of each product for each quarter, along with the date of the purchase. It uses the WITH AS clause to ensure correct grouping for each aggregate function and for each quarter. It begins by finding the quantities of product purchased for each quarter before finding the max of that product. Then, it will group those together with the corresponding dates before combining together the data for each quarter to create the final table.*/
+
+--Begin Query 5:
+
+WITH p1 AS (
+	SELECT prod product, quant
+	FROM sales
+	WHERE month = 1 OR month = 2 OR month = 3
+	ORDER BY product
+), p2 AS (
+	SELECT product, max(quant) q1_max
+	FROM p1
+	GROUP BY product
+	ORDER BY product
+), p3 AS (
+	SELECT p2.product, p2.q1_max, sales.date
+	FROM p2, sales
+	WHERE p2.product = sales.prod AND p2.q1_max = sales.quant AND 
+		(sales.month = 1 OR sales.month = 2 OR sales.month = 3)
+	ORDER BY product, date
+), p4 AS (
+	SELECT prod product, quant
+	FROM sales
+	WHERE month = 4 OR month = 5 OR month = 6
+	ORDER BY product
+), p5 AS (
+	SELECT product, max(quant) q2_max
+	FROM p4
+	GROUP BY product
+	ORDER BY product
+), p6 AS (
+	SELECT p5.product, p5.q2_max, sales.date
+	FROM p5, sales
+	WHERE p5.product = sales.prod AND p5.q2_max = sales.quant AND 
+		(sales.month = 4 OR sales.month = 5 OR sales.month = 6)
+	ORDER BY product, date
+), p7 AS (
+	SELECT prod product, quant
+	FROM sales
+	WHERE month = 7 OR month = 8 OR month = 9
+	ORDER BY product
+), p8 AS (
+	SELECT product, max(quant) q3_max
+	FROM p7
+	GROUP BY product
+	ORDER BY product
+), p9 AS (
+	SELECT p8.product, p8.q3_max, sales.date
+	FROM p8, sales
+	WHERE p8.product = sales.prod AND p8.q3_max = sales.quant AND
+		(sales.month = 7 OR sales.month = 8 OR sales.month = 9)
+	ORDER BY product, date
+), p10 AS (
+	SELECT prod product, quant
+	FROM sales
+	WHERE month = 10 OR month = 11 OR month = 12
+	ORDER BY product
+), p11 AS (
+	SELECT product, max (quant) q4_max
+	FROM p10
+	GROUP BY product
+	ORDER BY product
+), p12 AS (
+	SELECT p11.product, p11.q4_max, sales.date
+	FROM p11, sales
+	WHERE p11.product = sales.prod AND p11.q4_max = sales.quant AND 
+		(sales.month = 10 OR sales.month = 11 OR sales.month = 12)
+	ORDER BY product, date
+), p13 AS (
+	SELECT p3.product, p3.q1_max, p3.date q1_date, p6.q2_max, p6.date q2_date
+	FROM p3, p6
+	WHERE p3.product = p6.product
+	ORDER BY product
+), p14 AS (
+	SELECT p13.product, p13.q1_max, p13.q1_date, p13.q2_max, p13.q2_date,
+		p9.q3_max, p9.date q3_date
+	FROM p13, p9
+	WHERE p13.product = p9.product
+	ORDER BY product
+), p15 AS (
+	SELECT p14.product, p14.q1_max, p14.q1_date date, p14.q2_max, 
+		p14.q2_date date, p14.q3_max, p14.q3_date date, p12.q4_max, p12.date
+	FROM p14, p12
+	WHERE p14.product = p12.product
+	ORDER BY product
+)
+SELECT * FROM p15
+
+--End Query 5
+
+/*Complexity: These queries are complex because they use aggregate functions, which require grouping. Tables must also be organized by quarters and seasons, which requires further grouping. In order to ensure correct groupings, tables must be made into temporary tables, increasing the complexity of the queries. It is the combination of groupings and having to create temporary tables that makes these queries complex.*/

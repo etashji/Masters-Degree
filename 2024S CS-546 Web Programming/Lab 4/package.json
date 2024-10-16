@@ -1,0 +1,24 @@
+{
+  "name": "cs-546-lab-4",
+  "version": "1.0.0",
+  "description": "This is the package for lab 4 in cs 546.",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "CS-546"
+  },
+  "keywords": [
+    "Tashji_Eric",
+    "Lab4",
+    "mongodb"
+  ],
+  "author": "Eric Tashji 20019353",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^6.3.0"
+  }
+}

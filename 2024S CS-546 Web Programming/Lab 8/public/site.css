@@ -1,0 +1,72 @@
+/*This file should have 10 CSS rulesets */
+body {
+    background-color: darkred;
+    color: lightblue;
+}
+
+a {
+    color: white !important;
+    background: blue;
+    padding: 5px;
+    text-decoration: none;
+    opacity: 0.6;
+}
+
+a:hover {
+    opacity: 1;
+}
+
+h1, p, li, a, label {
+    font-family: fantasy;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.margins {
+    margin: 50px;
+}
+
+.enlarge {
+    font-size: 18px;
+}
+
+.enlarge-header {
+    font-size: 36px;
+    text-decoration: underline;
+}
+
+.center-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+}
+
+.center-list {
+    display: table;
+    margin: 0 auto;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+.button {
+    color: white !important;
+    background: blue;
+    padding: 5px;
+    text-decoration: none;
+    opacity: 0.6;
+}
+
+.button:hover {
+    opacity: 1;
+}
+
+.not-found {
+    font-family:'Courier New', Courier, monospace
+}

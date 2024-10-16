@@ -1,0 +1,38 @@
+<head>
+        <title>Register</title>
+        <link rel = "stylesheet" href="../../public/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1 class="center">Login</h1>
+    </header>
+    <main>
+        <form class="center" id="registration-form" method="POST" action="/register">
+            <label class="center" for="firstNameInput">First Name:</label>
+            <input class="center-align margin-bottom" type="text" name="firstNameInput" id="firstNameInput">
+            <br>
+            <label class="center" for="lastNameInput">Last Name:</label>
+            <input class="center-align margin-bottom" type="text" name="lastNameInput" id="lastNameInput">
+            <br>
+            <label class="center" for="emailAddressInput">Email Address:</label>
+            <input class="center-align margin-bottom" type="email" name="emailAddressInput" id="emailAddressInput">
+            <br>
+            <label class="center" for="passwordInput">Password:</label>
+            <input class="center-align margin-bottom" type="password" name="passwordInput" id="passwordInput">
+            <br>
+            <label class="center" for="confirmPasswordInput">Confirm Password:</label>
+            <input class="center-align margin-bottom" type="password" name="confirmPasswordInput" id="confirmPasswordInput">
+            <br>
+            <label class="center" for="roleInput">Role:</label>
+            <select name="roleInput" id="roleInput" form="registration-form">
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+            </select>
+            <br>
+            <button type="submit">Register</button>
+            <p class="center">{{error}}</p>
+        </form>
+        <a class="center-text" href="/login">Already have an account? Click here to log-in.</a>
+    </main>
+    <script src="../public/js/client_side_validation.js"></script>
+</body>

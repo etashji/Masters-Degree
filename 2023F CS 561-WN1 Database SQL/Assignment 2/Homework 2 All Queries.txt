@@ -1,0 +1,209 @@
+--Name: Eric Tashji
+--CWID: 20019353
+
+/*Copy and paste all queries to run them. Queries are marked with a beginning and end point to help ensure the entire query is copied.*/
+
+/*Query 1 will get all of the customers, products, and months, as well as the months after and months before. Then, it will find all the averages for the  next and previous months before using that to calculate the number of sales quantities between the next and previous months' averages.*/
+
+--Begin Query 1
+
+WITH p1 AS (
+	SELECT DISTINCT cust customer, prod product, month
+	FROM sales
+	ORDER BY customer, product, month
+), p2 AS (
+	SELECT DISTINCT cust customer, prod product, month, month + 1 nextMonth, month - 1 prevMonth
+	FROM sales
+	ORDER BY customer, product, month
+), p3 AS (
+	SELECT customer, product, nextMonth, avg(quant) nextAvg
+	FROM p2, sales
+	WHERE customer = cust AND product = prod 
+	AND nextMonth = sales.month
+	GROUP BY customer, product, nextMonth
+), p4 AS (
+	SELECT customer, product, prevMonth, avg(quant) prevAvg
+	FROM p2, sales
+	WHERE customer = cust AND product = prod AND prevMonth = sales.month
+	GROUP BY customer, product, prevMonth
+), p5 AS (
+	SELECT p2.customer, p2.product, p2.month, prevAvg, nextAVG
+	FROM p2, p3, p4
+	WHERE p2.customer = p3.customer AND p2.customer = p4.customer 
+	AND p2.product = p3.product AND p2.product = p4.product
+	AND p2.month = p3.nextMonth - 1 AND p2.month = p4.prevMonth + 1
+), p6 AS (
+	SELECT customer, product, p5.month, count(quant) sales_count_between_avgs
+	FROM p5, sales
+	WHERE customer = cust AND product = prod AND p5.month = sales.month 
+	AND ((quant > prevAvg AND quant < nextAvg) OR 
+		 (quant > nextAvg AND quant < prevAvg))
+	GROUP BY customer, product, p5.month
+	ORDER BY customer, product, p5.month
+), p7 AS (
+	SELECT p1.customer, p1.product, p1.month, sales_count_between_avgs
+	FROM p1 LEFT JOIN p6 ON p1.customer = p6.customer AND 
+	p1.product = p6.product AND p1.month = p6.month
+	ORDER BY customer, product, month
+) SELECT * FROM p7
+
+--End Query 1
+
+/*Query 2: This query will begin by determining the next month and previous month. Then, it will find the averages of the next and previous months (as well as the month itself) before putting all the averages together.*/
+
+--Begin Query 2
+
+WITH p1 AS (
+	SELECT DISTINCT cust customer, prod product, month, month + 1 nextMonth, month - 1 prevMonth
+	FROM sales
+	ORDER BY customer, product, month
+), p2 AS (
+	SELECT customer, product, nextMonth, avg(quant) after_avg
+	FROM p1, sales
+	WHERE customer = cust AND product = prod 
+	AND nextMonth = sales.month
+	GROUP BY customer, product, nextMonth
+), p3 AS (
+	SELECT customer, product, prevMonth, avg(quant) before_avg
+	FROM p1, sales
+	WHERE customer = cust AND product = prod AND prevMonth = sales.month
+	GROUP BY customer, product, prevMonth
+), p4 AS (
+	SELECT p1.customer, p1.product, p1.month, avg(quant) during_avg
+	FROM p1, sales
+	WHERE customer = cust AND product = prod AND p1.month = sales.month
+	GROUP BY customer, product, p1.month
+	ORDER BY customer, product, p1.month
+), p5 AS (
+	SELECT p4.customer, p4.product, p4.month, before_avg, during_avg
+	FROM p4 LEFT JOIN p3 ON p4.customer = p3.customer 
+	AND p4.product = p3.product AND p4.month = p3.prevMonth + 1
+), p6 AS (
+	SELECT p5.customer, p5.product, p5.month, before_avg, during_avg, after_avg
+	FROM p5 LEFT JOIN p2 ON p5.customer = p2.customer AND p5.product = p2.product
+	AND p5.month = p2.nextMonth - 1
+)SELECT * FROM p6
+
+--End Query 2
+
+/*Query 3: This query will begin by calculating the average quantity for the customer, product, and state. Then, it will find the averages for the other customers, other products, and other states, before joining the tables together.*/
+
+--Begin Query 3
+
+WITH p1 AS (
+	SELECT cust customer, prod product, state, avg (quant) prod_avg
+	FROM sales
+	GROUP BY customer, product, state
+	ORDER BY customer, product, state
+), p2 AS (
+	SELECT customer, product, p1.state, avg(quant) other_cust_avg
+	FROM p1, sales
+	WHERE customer != cust AND product = prod AND p1.state = sales.state
+	GROUP BY customer, product, p1.state
+	ORDER BY customer, product, p1.state
+), p3 AS (
+	SELECT customer, product, p1.state, avg(quant) other_prod_avg
+	FROM p1, sales
+	WHERE customer = cust AND product != prod and p1.state = sales.state
+	GROUP BY customer, product, p1.state
+	ORDER BY customer, product, p1.state
+), p4 AS (
+	SELECT customer, product, p1.state, avg(quant) other_state_avg
+	FROM p1, sales
+	WHERE customer = cust AND product = prod AND p1.state != sales.state
+	GROUP BY customer, product, p1.state
+	ORDER BY customer, product, p1.state
+), p5 AS (
+	SELECT p1.customer, p1.product, p1.state, prod_avg, other_cust_avg
+	FROM p1
+	NATURAL JOIN p2
+), p6 AS (
+	SELECT p5.customer, p5.product, p5.state, prod_avg, other_cust_avg, 
+		other_prod_avg
+	FROM p5
+	NATURAL JOIN p3
+)
+SELECT p6.customer, p6.product, p6.state, prod_avg, other_cust_avg, 
+	other_prod_avg, other_state_avg
+FROM p6 NATURAL JOIN p4
+ORDER BY p6.customer, p6.product, p6.state
+
+--End Query 3
+
+/*Query 4: This query will begin by finding the max of the entire table for each customer and product. Then, it uses the first maximum to find the second maximum, and the second maximum to find the third maximum. Finally, it groups them together, and then finds all of the matching sales in the sales table to get the product and date.*/
+
+--Begin Query 4
+
+WITH p1 AS (
+	SELECT cust customer, max(quant) quantity
+	FROM sales
+	WHERE state = 'NJ'
+	GROUP BY customer
+	ORDER BY customer
+), p2 AS (
+	SELECT customer, max(quant) quantity
+	FROM p1, sales
+	WHERE cust = customer AND quant != quantity AND state = 'NJ'
+	GROUP BY customer
+	ORDER BY customer
+	
+), p3 AS (
+	SELECT p1.customer, max(quant) quantity
+	FROM p1, p2, sales
+	WHERE cust = p1.customer AND cust = p2.customer 
+	AND quant != p1.quantity AND quant != p2.quantity AND state = 'NJ'
+	GROUP BY p1.customer
+	ORDER BY p1.customer
+), p4 AS (
+	SELECT customer, quantity FROM p1
+	UNION
+	SELECT customer, quantity FROM p2
+	UNION
+	SELECT customer, quantity FROM p3
+	ORDER BY customer
+), p5 AS (
+	SELECT customer, quantity, prod product, date
+	FROM p4, sales
+	WHERE cust = customer AND quant = quantity AND state = 'NJ'
+	ORDER BY customer, quantity DESC
+)
+SELECT * FROM p5
+
+--End Query 4
+
+/*Query 5: This query calculates the median by counting the number of sales and dividing it by 2. From there, we can get the upper half of the sales and the lower half of the sales. Finally, we use that to find the median.*/
+
+--Begin Query 5
+
+WITH p1 AS (
+	SELECT prod product, count(prod) / 2 half_count
+	FROM sales
+	GROUP BY product
+	ORDER BY product
+), p2 AS (
+	SELECT DISTINCT prod product, quant quantity
+	FROM sales
+	ORDER BY product, quantity ASC
+), p3 AS (
+	SELECT product, quantity, count(quant) greater_than_equal
+	FROM p2, sales
+	WHERE prod = product AND quant >= quantity
+	GROUP BY product, quantity
+	ORDER BY product, quantity
+), p4 AS (
+	SELECT p3.product, quantity, greater_than_equal - half_count diff
+	FROM p3, p1
+	WHERE p1.product = p3.product AND greater_than_equal - half_count >= 0
+	ORDER BY product, quantity
+), p5 AS (
+	SELECT product, min(diff) pos
+	FROM p4
+	GROUP BY product
+	ORDER BY product
+), p6 AS (
+	SELECT p5.product, quantity median_quant
+	FROM p4 INNER JOIN p5 ON p4.product = p5.product AND diff = pos
+)
+SELECT * FROM p6
+
+--End Query 5
