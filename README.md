@@ -62,4 +62,4 @@
 * Lab 6: This lab involves the creation of subdocuments in MongoDB.
 * Lab 7: This lab is a basic lab implementing HTML.
 * Lab 8: This lab involves implementing handlebars within HTML.
-* Lab 9: This lab involves implementing static JavaScript with an HTML page.
+* Lab 9: This lab involves implementing static JavaScript within HTML.
