@@ -33,3 +33,15 @@
 * Homework 3: This involves training a data set using a decision tree and a random forest. The homework itself involves subjects like the bias-variance tradeoff and confusion matrices.
 * Homework 4: This involves using a decision tree and a random forest. The homework itself involves subjects like Bayes rule an the Naive Bayes algorithm.
 * Homework 5: This involves designing a genetic algorithm to solve the polynomial fitting problem. The homework itself involves using the Gaussian Mixture technique for anomaly detection.
+## 2024A CS 522-WN Mobile Applications
+### This folder contains assignments completed during my Mobile Assignments class. They were completed mostly using Java and Android Studio.
+* Assignment 1 My First App: This assignment involves creating a mobile app with a basic framework.
+* Assignment 10 gRPC Client: This assignment involves creating a single app that can communicate back and forth between two phones and a server, using a gRPC Client.
+* Assignment 2 Chat App: This assignment involves creating a two basic chat apps: one is the client and the other is the server. The client can only send messages and the server can only receive messages.
+* Assignment 3 Database and Content Provider: This assignment involves a continuation of the last assignment, but involves using a content provider to create a better UI.
+* Assignment 4 Application Architecture I: This involves a continuation of the last assignment, but also includes implementing an application architcture to store the messages.
+* Assignment 5 Application Architecture II: This involves a continuation of the last assignment, completing the application architecture tos tore the messages.
+* Assignment 6 User Experience: This is not a coding assignment, but rather an assignment that involves creating a persona to develop a user experience for a theoretical app.
+* Assignment 7 Fragments and Dialogs: This is a continuation of Assignment 5, which implements the use of fragments and dialogs to create a better user interface.
+* Assignemnt 8 Chat App with Service: This assignment takes the Server and Client chat apps from previous assignments and turns them into a single chat app for sending and receiving messages.
+* Assignment 9 REST Client: This assignment takes the chat app from the previous assignment and allows them to communicate via a server using a REST client.
