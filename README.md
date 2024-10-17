@@ -45,3 +45,9 @@
 * Assignment 7 Fragments and Dialogs: This is a continuation of Assignment 5, which implements the use of fragments and dialogs to create a better user interface.
 * Assignemnt 8 Chat App with Service: This assignment takes the Server and Client chat apps from previous assignments and turns them into a single chat app for sending and receiving messages.
 * Assignment 9 REST Client: This assignment takes the chat app from the previous assignment and allows them to communicate via a server using a REST client.
+## 2024 CS 520-WN Operating Systems
+### This folder contains assignments completed in the operating systems course, using C++ and a Linux virtual machine.
+* Assignment 1: This assignment involves creating a scheduling system for operations, using two algorithms: the priority schedule algorithm, and the SJF schedule algorithm.
+* Assignment 2: This assignment involves creating a disk scheduler.
+* Assignment 3: This assignment involves creating a mechanism for signing in and signing out.
+## 
