@@ -50,4 +50,16 @@
 * Assignment 1: This assignment involves creating a scheduling system for operations, using two algorithms: the priority schedule algorithm, and the SJF schedule algorithm.
 * Assignment 2: This assignment involves creating a disk scheduler.
 * Assignment 3: This assignment involves creating a mechanism for signing in and signing out.
-## 
+## 2024S CS-546 Web Programming
+### This folder contains a series of projects completed during my web programming course. They are done using HTML, CSS, and JavaScript.
+* Lab 1: This involves implementing a series of basic algorithms using JavaScript.
+* Lab 10: This builds on lab 9, implementing a system to login and logout users.
+* Lab 11: This involves creating an AJAX form.
+* Lab 2: This lab involves creating a series of special utilities using JavaScript.
+* Lab 3: This lab involves implementing asynchronous operations using JavaScript.
+* Lab 4: This lab involves connecting to and using MongoDB.
+* Lab 5: This lab involves displaying information from MongoDB to a web server using JSON.
+* Lab 6: This lab involves the creation of subdocuments in MongoDB.
+* Lab 7: This lab is a basic lab implementing HTML.
+* Lab 8: This lab involves implementing handlebars within HTML.
+* Lab 9: This lab involves implementing static JavaScript with an HTML page.
